@@ -1,6 +1,6 @@
 # This script is prepared for packaging with PyInstaller for Windows.
 # It downloads a YouTube video, transcribes it using the multi-language 'base' model, and embeds subtitles.
-# Videos are saved in the same folder as the application.
+# Videos are saved in a 'recordings' subfolder.
 
 import sys
 import os
@@ -123,7 +123,7 @@ def download_video(url: str) -> str | None:
     ydl_opts = {
         'format': 'bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         # --- PATH CHANGED HERE ---
-        'outtmpl': os.path.join(BASE_PATH, '%(title)s.%(ext)s'),
+        'outtmpl': os.path.join(BASE_PATH, 'recordings', '%(title)s.%(ext)s'),
         'progress_hooks': [progress_hook], 'noplaylist': True, 'merge_output_format': 'mp4',
     }
     try:
@@ -140,7 +140,6 @@ if __name__ == "__main__":
     print("="*60)
     print("      YouTube Subtitle Downloader")
     print("="*60)
-    # --- MODEL CHANGED HERE ---
     print(f"⚙️ Loading transcription model 'base'. Please wait...")
     print("   (This may download several hundred MB on the first run)")
     try:
@@ -176,5 +175,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"\n❌ An unexpected error occurred: {e}", file=sys.stderr)
             print("   Please try another link or restart the script.")
-
 
