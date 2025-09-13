@@ -27,7 +27,8 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller --name "YouTubeDownloader" --onefile --console youtube_download.py
+          $assets_path = (python -c "import os, faster_whisper; print(os.path.join(os.path.dirname(faster_whisper.__file__), 'assets'))")
+          pyinstaller --name "YouTubeDownloader" --onefile --console --add-data "$($assets_path);faster_whisper/assets" youtube_download.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4  # ✅ Fixed here (v3 → v4)
