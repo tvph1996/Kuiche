@@ -1,0 +1,2 @@
+source venv/bin/activate &&
+python youtube_download.py https://www.youtube.com/watch?v=_kKudP54kOM&t=177s&pp=ygUIWkRGIFdJU08%3D
