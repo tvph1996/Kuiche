@@ -2,9 +2,9 @@ name: Build Windows Executable
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build-windows:
@@ -27,11 +27,10 @@ jobs:
 
       - name: Build executable
         run: |
-          # Customize this command for YOUR project:
           pyinstaller --name "YouTubeDownloader" --onefile --console youtube_download.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # ✅ Fixed here (v3 → v4)
         with:
           name: youtube-downloader-win
           path: dist/YouTubeDownloader.exe
