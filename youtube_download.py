@@ -1,6 +1,6 @@
 # This script is prepared for packaging with PyInstaller for Windows.
 # It downloads a YouTube video, transcribes it using the multi-language 'base' model, and embeds subtitles.
-# Videos are saved in a 'recordings' subfolder.
+# Videos are saved in a 'recordings' subfolder. Subtitles are now set as the default track.
 
 import sys
 import os
@@ -96,7 +96,9 @@ def embed_subtitles(video_path: str, srt_path: str):
     print(f"\n▶️ STEP 3: Embedding subtitles into {video_p.name}")
     command = [
         str(FFMPEG_PATH), '-i', str(video_p), '-i', str(srt_p),
-        '-c', 'copy', '-c:s', 'mov_text', '-metadata:s:s:0', 'language=deu', # Set subtitle language to German
+        '-c', 'copy', '-c:s', 'mov_text',
+        '-metadata:s:s:0', 'language=deu',
+        '-disposition:s:0', 'default',  # <-- THIS IS THE NEW FLAG
         '-y', str(output_p)
     ]
     try:
@@ -122,7 +124,6 @@ def download_video(url: str) -> str | None:
             print("\nDownload finished, post-processing...")
     ydl_opts = {
         'format': 'bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-        # --- PATH CHANGED HERE ---
         'outtmpl': os.path.join(BASE_PATH, 'recordings', '%(title)s.%(ext)s'),
         'progress_hooks': [progress_hook], 'noplaylist': True, 'merge_output_format': 'mp4',
     }
@@ -175,4 +176,3 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"\n❌ An unexpected error occurred: {e}", file=sys.stderr)
             print("   Please try another link or restart the script.")
-
